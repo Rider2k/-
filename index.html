@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11111b">
+<title>Сто одно — карточная игра</title>
+<style>
+:root{--bg:#101019;--panel:#1b1b29;--panel2:#242438;--purple:#9564ff;--purple2:#bd91ff;--text:#f5f2ff;--muted:#aaa5bd;--red:#ff637d;--green:#58d6a0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#292044 0,#151421 42%,#0d0d14 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}.app{max-width:1050px;margin:auto;padding:18px 14px 32px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.brand{font-weight:900;letter-spacing:.04em;font-size:clamp(20px,4vw,29px)}.brand span{color:var(--purple2)}.pill{border:1px solid #51436d;background:#211d31;color:#d9caff;border-radius:999px;padding:7px 11px;font-size:12px}
+.layout{display:grid;grid-template-columns:1fr 270px;gap:14px}.table{background:linear-gradient(145deg,#222033,#151520);border:1px solid #38324b;border-radius:24px;padding:16px;box-shadow:0 18px 55px #0007;min-height:560px;display:flex;flex-direction:column;gap:14px}.side{display:flex;flex-direction:column;gap:12px}.box{background:#1b1a28;border:1px solid #353047;border-radius:18px;padding:14px}.box h3{margin:0 0 10px;font-size:14px;color:#d9d0f1}.status{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.status strong{color:var(--text)}.players{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.player{background:#201e2e;border:1px solid #373149;border-radius:14px;padding:10px;text-align:center;min-height:76px}.player.active{border-color:var(--purple);box-shadow:0 0 0 1px #9564ff55,0 0 22px #9564ff22}.player b{display:block;font-size:13px}.player small{color:var(--muted);font-size:11px}.avatar{font-size:20px;margin-bottom:4px}.center{display:flex;justify-content:center;align-items:center;gap:18px;flex:1;min-height:180px}.pile{display:flex;flex-direction:column;align-items:center;gap:7px}.pile label{font-size:11px;color:var(--muted)}.card{width:82px;height:116px;border-radius:12px;background:#faf8ff;color:#171521;box-shadow:0 7px 18px #0006;position:relative;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:31px;border:1px solid #ddd}.card.red{color:#d93658}.card .corner{position:absolute;left:7px;top:5px;font-size:13px;line-height:1.05}.card .corner.bottom{left:auto;top:auto;right:7px;bottom:5px;transform:rotate(180deg)}.card.back{background:repeating-linear-gradient(45deg,#38265d,#38265d 7px,#523b83 7px,#523b83 14px);border:3px solid #d2baff;color:white}.card.back:after{content:"101";font-size:20px;border:1px solid #b99aff;border-radius:8px;padding:5px}.discard{transform:rotate(3deg)}.deckcount{font-size:11px;color:var(--muted)}.message{background:#151421;border:1px solid #383149;border-radius:13px;padding:10px 12px;text-align:center;font-size:13px;color:#e2d9f5;min-height:42px}.hand-wrap{border-top:1px solid #383149;padding-top:12px}.hand-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.hand-head b{font-size:14px}.hand{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;min-height:128px}.hand .card{width:70px;height:101px;font-size:27px;transition:transform .15s,border-color .15s;cursor:pointer}.hand .card:hover{transform:translateY(-7px)}.hand .card:focus{outline:3px solid var(--purple2)}.hand .card.disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.5)}.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid #51446e;background:#29243a;color:#f4edff;border-radius:12px;padding:10px 15px;font-weight:700;font-size:13px}.btn.primary{background:linear-gradient(135deg,#8c59f5,#6537c6);border:0;box-shadow:0 7px 18px #7042c955}.btn:disabled{opacity:.4;cursor:not-allowed}.suit-chooser{display:flex;justify-content:center;gap:9px;margin-top:10px}.suit-chooser button{font-size:24px;width:48px;height:44px;border-radius:12px;border:1px solid #55456f;background:#282239}.rules{font-size:12px;color:var(--muted);line-height:1.55}.rules b{color:#eee8ff}.hidden{display:none!important}.overlay{position:fixed;inset:0;background:#090811cc;display:flex;align-items:center;justify-content:center;padding:18px;z-index:10}.modal{width:min(440px,100%);background:#211e30;border:1px solid #5b4b79;border-radius:22px;padding:22px;box-shadow:0 20px 80px #000b}.modal h2{margin:0 0 8px}.modal p{color:var(--muted);font-size:13px;line-height:1.5}.modal .btn{width:100%;margin-top:8px}.toast{color:var(--green);font-size:12px;text-align:center;min-height:16px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.table{min-height:0;padding:12px}.side{display:grid;grid-template-columns:1fr 1fr}.side .box:last-child{grid-column:1/-1}.players{grid-template-columns:repeat(3,1fr)}.center{min-height:145px}.card{width:70px;height:100px}.hand{gap:6px}.hand .card{width:58px;height:86px;font-size:23px}.hand .corner{font-size:11px}.app{padding:12px 10px 25px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top"><div class="brand">СТО <span>ОДНО</span></div><div class="pill">карточная игра · против компьютера</div></header>
+  <div class="layout">
+    <main class="table">
+      <div class="status"><span>Ход: <strong id="turnLabel">Вы</strong></span><span>Направление: <strong id="direction">по часовой</strong></span><span>Штраф: <strong id="penalty">0</strong></span></div>
+      <div class="players" id="players"></div>
+      <div class="center">
+        <div class="pile"><label>КОЛОДА</label><div class="card back" id="drawPile" role="button" tabindex="0" aria-label="Взять карту"></div><div class="deckcount" id="deckCount"></div></div>
+        <div class="pile"><label>СБРОС</label><div id="topCard" class="card discard"></div><div class="deckcount" id="currentSuit"></div></div>
+      </div>
+      <div id="message" class="message" aria-live="polite">Ваш ход. Сбросьте карту той же масти или достоинства.</div>
+      <div id="suitArea" class="hidden"><div style="text-align:center;font-size:12px;color:#d9caff">Выберите новую масть:</div><div class="suit-chooser"><button data-suit="♠">♠</button><button data-suit="♥" style="color:#ff637d">♥</button><button data-suit="♦" style="color:#ff637d">♦</button><button data-suit="♣">♣</button></div></div>
+      <div class="hand-wrap"><div class="hand-head"><b>Ваши карты</b><span id="handCount" class="pill"></span></div><div class="hand" id="hand"></div><div class="actions"><button class="btn primary" id="drawBtn">Взять карту</button><button class="btn" id="newGameBtn">Новая игра</button></div></div>
+    </main>
+    <aside class="side">
+      <section class="box"><h3>Цель игры</h3><div class="rules">Первым избавиться от всех карт. Если сумма штрафов на руках достигает <b>101 очка</b>, игрок выбывает.</div></section>
+      <section class="box"><h3>Правила этой версии</h3><div class="rules"><b>Колода:</b> 36 карт, 4 игрока.<br><b>6</b> — следующий берёт 1 карту.<br><b>7</b> — следующий берёт 2 карты.<br><b>Туз</b> — пропуск хода.<br><b>Дама</b> — можно выбрать масть.<br><b>Король пик</b> — следующий берёт 4 карты.<br><b>Валет</b> — обычная карта.<br>На карту кладут ту же масть или достоинство. Если ходить нечем — берут карту.</div></section>
+      <section class="box"><h3>Подсказка</h3><div class="rules">Нажмите на карту в руке, чтобы сыграть её. Если подходящей карты нет, нажмите «Взять карту». В этой версии можно сыграть только одну карту за ход.</div></section>
+    </aside>
+  </div>
+</div>
+<div class="overlay" id="overlay"><div class="modal"><h2 id="modalTitle">Сто одно</h2><p id="modalText">Сыграйте против трёх соперников-компьютеров. Избавьтесь от карт раньше них и не набирайте 101 штрафное очко.</p><button class="btn primary" id="startBtn">Начать игру</button></div></div>
+<script>
+(()=>{
+const suits=['♠','♥','♦','♣'], ranks=['6','7','8','9','10','В','Д','К','Т'];
+const points={'6':6,'7':7,'8':8,'9':9,'10':10,'В':2,'Д':3,'К':4,'Т':11};
+const names=['Вы','Алекс','Мира','Дэн'];
+let deck=[],players=[],discard=[],turn=0,activeSuit='♠',direction=1,penalty=0,gameOver=false,awaitSuit=false,started=false,drawnThisTurn=false;
+const $=id=>document.getElementById(id);
+function makeDeck(){let d=[];for(const s of suits)for(const r of ranks)d.push({s,r,id:s+r});return shuffle(d)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function cardPoints(c){return points[c.r]||0}
+function isRed(s){return s==='♥'||s==='♦'}
+function cardHTML(c,extra=''){return `<div class="card ${isRed(c.s)?'red':''} ${extra}"><span class="corner">${c.r}<br>${c.s}</span>${c.s}<span class="corner bottom">${c.r}<br>${c.s}</span></div>`}
+function startGame(){
+ $('drawBtn').textContent='Взять карту';$('drawBtn').onclick=userDraw;
+ deck=makeDeck();players=names.map((n,i)=>({name:n,hand:[],score:0,alive:true}));for(let n=0;n<6;n++)for(const p of players)p.hand.push(deck.pop());
+ discard=[deck.pop()];activeSuit=discard[0].s;turn=0;direction=1;penalty=0;gameOver=false;awaitSuit=false;drawnThisTurn=false;started=true;
+ $('overlay').classList.add('hidden');say('Ваш ход. Сбросьте карту той же масти или достоинства.');render();
+}
+function say(t){$('message').textContent=t}
+function playable(c){let top=discard[discard.length-1];return c.s===activeSuit||c.r===top.r}
+function nextAlive(from,steps=1){let idx=from;for(let k=0;k<steps;k++){do{idx=(idx+direction+4)%4}while(!players[idx].alive)}return idx}
+function render(){
+ $('turnLabel').textContent=players[turn]?.name||'—';$('direction').textContent=direction===1?'по часовой':'против часовой';$('penalty').textContent=penalty;
+ $('deckCount').textContent=`Осталось: ${deck.length}`;$('currentSuit').textContent=`Текущая масть: ${activeSuit}`;
+ $('topCard').outerHTML=cardHTML(discard[discard.length-1],'discard').replace('class="card','id="topCard" class="card');
+ $('players').innerHTML=players.map((p,i)=>`<div class="player ${i===turn&&!gameOver?'active':''} ${!p.alive?'':' '}"><div class="avatar">${i===0?'🧑':i===1?'🤖':i===2?'🤖':'🤖'}</div><b>${p.name}</b><small>${p.alive?p.hand.length+' карт':'выбыл'} · ${p.score} очк.</small></div>`).join('');
+ $('handCount').textContent=players[0].hand.length+' карт';
+ $('hand').innerHTML=players[0].hand.map((c,i)=>{let ok=turn===0&&!gameOver&&!awaitSuit&&playable(c)&&(!drawnThisTurn||true);return `<div class="card ${isRed(c.s)?'red':''} ${ok?'':'disabled'}" data-i="${i}" role="button" tabindex="${ok?0:-1}" aria-label="${c.r} ${c.s}"><span class="corner">${c.r}<br>${c.s}</span>${c.s}<span class="corner bottom">${c.r}<br>${c.s}</span></div>`}).join('');
+ $('drawBtn').disabled=gameOver||turn!==0||awaitSuit;
+ $('suitArea').classList.toggle('hidden',!awaitSuit);
+}
+function recycle(){if(deck.length===0&&discard.length>1){let top=discard.pop();deck=shuffle(discard);discard=[top]}}
+function drawCards(who,n){for(let i=0;i<n;i++){recycle();if(deck.length)players[who].hand.push(deck.pop())}}
+function playCard(who,index,chosenSuit=null){
+ if(gameOver||who!==turn||awaitSuit)return;
+ let c=players[who].hand[index];if(!c||!playable(c))return;
+ players[who].hand.splice(index,1);discard.push(c);activeSuit=c.s;
+ if(c.r==='Д'&&chosenSuit===null){awaitSuit=true;render();say('Выберите масть для продолжения.');return}
+ if(c.r==='Д'&&chosenSuit)activeSuit=chosenSuit;
+ let next=nextAlive(turn);
+ if(c.r==='6'){drawCards(next,1);say(`${players[next].name} берёт 1 карту.`);turn=nextAlive(next)}
+ else if(c.r==='7'){drawCards(next,2);say(`${players[next].name} берёт 2 карты.`);turn=nextAlive(next)}
+ else if(c.r==='Т'){say(`${players[next].name} пропускает ход.`);turn=nextAlive(next)}
+ else if(c.r==='К'&&c.s==='♠'){drawCards(next,4);say(`${players[next].name} берёт 4 карты.`);turn=nextAlive(next)}
+ else{turn=next;say(who===0?`Вы сыграли ${c.r}${c.s}.`:`${players[who].name} сыграл карту.`)}
+ checkEnd();drawnThisTurn=false;$('drawBtn').textContent='Взять карту';$('drawBtn').onclick=userDraw;render();if(!gameOver&&turn!==0)setTimeout(botTurn,650);
+}
+function checkEnd(){
+ for(let i=0;i<players.length;i++){let p=players[i];if(p.alive&&p.hand.length===0){gameOver=true;showEnd(p.name+' победил!',p.name==='Вы'?'Вы избавились от всех карт.':'В этот раз победил соперник.');return}}
+ for(let i=0;i<players.length;i++){let p=players[i];if(p.alive){let sum=p.hand.reduce((a,c)=>a+cardPoints(c),0);if(sum>=101){p.alive=false;p.score=sum;if(i===0){gameOver=true;showEnd('Вы набрали 101 очко','Игра окончена. Попробуйте ещё раз.');return}}}}
+ if(players.filter(p=>p.alive).length===1){let p=players.find(p=>p.alive);gameOver=true;showEnd(p.name+' победил!','Остальные игроки выбыли.')}
+}
+function showEnd(title,txt){$('modalTitle').textContent=title;$('modalText').textContent=txt;$('startBtn').textContent='Играть ещё раз';$('overlay').classList.remove('hidden')}
+function botTurn(){
+ if(gameOver||turn===0)return;let p=players[turn],opts=p.hand.map((c,i)=>({c,i})).filter(x=>playable(x.c));
+ if(opts.length){opts.sort((a,b)=>special(b.c)-special(a.c));let choice=opts[0];let suit=choice.c.r==='Д'?suits[Math.floor(Math.random()*4)]:null;playCard(turn,choice.i,suit)}
+ else{drawCards(turn,1);say(`${p.name} берёт карту.`);checkEnd();turn=nextAlive(turn);render();if(turn!==0&&!gameOver)setTimeout(botTurn,550)}
+}
+function special(c){return c.r==='К'&&c.s==='♠'?5:c.r==='7'?4:c.r==='6'?3:c.r==='Т'?2:c.r==='Д'?1:0}
+function userDraw(){if(gameOver||turn!==0||awaitSuit)return;drawCards(0,1);drawnThisTurn=true;say('Вы взяли карту. Если она подходит, можете сыграть её; иначе нажмите «Взять карту» ещё раз для передачи хода.');render();$('drawBtn').textContent='Закончить ход';$('drawBtn').onclick=endDrawTurn}
+function endDrawTurn(){if(gameOver||turn!==0)return;turn=nextAlive(0);drawnThisTurn=false;$('drawBtn').textContent='Взять карту';$('drawBtn').onclick=userDraw;say('Вы передали ход.');render();if(turn!==0)setTimeout(botTurn,550)}
+$('drawBtn').onclick=userDraw;$('newGameBtn').onclick=()=>{ $('modalTitle').textContent='Новая игра';$('modalText').textContent='Начать новую партию? Текущая игра будет завершена.';$('startBtn').textContent='Начать заново';$('overlay').classList.remove('hidden')};
+$('startBtn').onclick=startGame;
+$('drawPile').onclick=userDraw;$('drawPile').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();userDraw()}};
+$('hand').onclick=e=>{let el=e.target.closest('[data-i]');if(!el||turn!==0||gameOver||awaitSuit)return;let i=Number(el.dataset.i);if(playable(players[0].hand[i]))playCard(0,i)};
+$('suitArea').onclick=e=>{let b=e.target.closest('[data-suit]');if(!b)return;awaitSuit=false;activeSuit=b.dataset.suit;let next=nextAlive(0);turn=next;say(`Вы выбрали масть ${activeSuit}. Ход соперника.`);checkEnd();render();if(!gameOver)setTimeout(botTurn,550)};
+})();
+</script>
+</body>
+</html>
